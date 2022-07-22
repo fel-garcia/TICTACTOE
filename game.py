@@ -1,6 +1,5 @@
-from ast import Return
-from re import S
-from numpy import number
+import time
+from player import HumanPlayer, RandomComputerPlayer
 
 
 class TicTacToe:
@@ -48,6 +47,19 @@ class TicTacToe:
         column = [self.board[col_ind + i*3] for i in range(3)]
         if all(spot == letter for spot in column):
             return True
+        
+        # Cheking diagonals
+        # but only if the square is an even number (0, 2, 4, 6, 8)
+        if square % 2 == 0:
+            diagonal1 = [self.board[i] for i in [0, 4, 8]]
+            if all(spot == letter for spot in diagonal1):
+                return True
+            diagonal2 = [self.board[i] for i in [2, 4, 6]]
+            if all(spot == letter for spot in diagonal2):
+                return True
+        
+        # if all checks fail
+        return False
 
 def play(game, x_player, o_player, print_game=True):
     if print_game:
@@ -73,6 +85,15 @@ def play(game, x_player, o_player, print_game=True):
                 return letter
             
             letter = 'O' if letter == 'X' else 'X'
+
+        # Tiny break
+        time.sleep(0.8)
         
-        if print_game:
-            print('it\s a tie!!')
+    if print_game:
+        print('it\s a tie!!')
+
+if __name__ == '__main__':
+    x_player = HumanPlayer('X')
+    o_player = RandomComputerPlayer('O')
+    t = TicTacToe()
+    play(t, x_player, o_player, print_game=True)
